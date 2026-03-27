@@ -81,9 +81,9 @@ function CalendarDetail() {
   return (
     <div className="max-w-md mx-auto min-h-screen bg-gray-100">
       <div className="bg-white px-5 py-4 border-b">
-        <span className="font-semibold text-lg">Input / Edit</span>
+        <span className="font-semibold text-lg">入力 / 編集</span>
         <p className="text-sm text-gray-500 mt-1">
-          {displayDate ? formatWorkDate(displayDate) : new Date().toDateString()}
+          {displayDate ? formatWorkDate(displayDate) : new Date().toLocaleDateString("ja-JP")}
         </p>
       </div>
 
@@ -92,11 +92,11 @@ function CalendarDetail() {
           onClick={() => navigate("/calendar")}
           className="text-green-600 text-sm cursor-pointer"
         >
-          ← Back to Calendar
+          ← カレンダーに戻る
         </button>
 
         {!hasData ? (
-          <div className="text-center text-gray-500 py-10">No Data Available</div>
+          <div className="text-center text-gray-500 py-10">データがありません</div>
         ) : (
           <>
             <div className="flex flex-col gap-4">
@@ -111,7 +111,7 @@ function CalendarDetail() {
                     </h3>
                     {seg.segment_type !== "OFFICE" && (
                       <p className="text-gray-500 text-sm">
-                        → {seg.site_id || "No Selected Site"}
+                        → {seg.site_id || "未選択のサイト"}
                       </p>
                     )}
                   </div>
@@ -122,47 +122,47 @@ function CalendarDetail() {
             {/* Summary */}
             <div className="bg-white rounded-2xl shadow-sm p-4 space-y-3">
               <div className="flex justify-between">
-                <span>Actual</span>
+                <span>実働</span>
                 <span className="font-semibold">{attendanceCalendar[0].actualHours}</span>
               </div>
               <div className="flex justify-between">
-                <span>Overtime</span>
+                <span>残業</span>
                 <span className="font-semibold">{attendanceCalendar[0].overtime}</span>
               </div>
               <hr />
               <div className="flex justify-between">
-                <span>Transport</span>
+                <span>交通費</span>
                 <span className="font-semibold">{attendanceCalendar[0].transport}</span>
               </div>
               <hr />
               <div>
-                <span>Subcontractors</span>
+                <span>下請け</span>
                 <p className="text-sm mt-1">{attendanceCalendar[0].subcontractors}</p>
               </div>
             </div>
 
-            {/* ✅ Add Segment buttons */}
+            {/* Add Segment buttons */}
             <div className="space-y-2 mt-4">
               <Button
-                text={segments.length > 0 ? "+ Add Segment" : "▶ Start"}
+                text={segments.length > 0 ? "+ セグメントを追加" : "▶ 開始"}
                 customButton="bg-green-500 text-white py-4 hover:bg-green-600"
                 onClick={() => handleAddSegment("default")}
               />
 
               <Button
-                text="+ Add Segment (manual)"
+                text="+ セグメントを手動追加"
                 customButton="bg-lime-500 text-white py-4 hover:bg-lime-600"
                 onClick={() => handleAddSegment("manual")}
               />
 
               <Button
-                text="Edit Transport"
+                text="交通費を編集"
                 customButton="bg-lime-500 text-white py-4 hover:bg-lime-600"
                 onClick={() => setOpenTransportModal(true)}
               />
 
               <Button
-                text="Edit Subcontractor"
+                text="下請けを編集"
                 customButton="bg-lime-500 text-white py-4 hover:bg-lime-600"
                 onClick={() => setOpenSubcontractorModal(true)}
               />
@@ -171,7 +171,7 @@ function CalendarDetail() {
         )}
       </div>
 
-      {/* ✅ Modals */}
+      {/* Modals */}
       <SegmentModal />
       <LocationModal />
       <ManualTimeModal />

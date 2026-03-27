@@ -64,7 +64,7 @@ function SubContractorModal({ open, setOpen }) {
 
           {/* HEADER */}
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-semibold">Subcontractor Report</h2>
+            <h2 className="text-lg font-semibold">下請け業者レポート</h2>
             <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-600">
               <X size={22} />
             </button>
@@ -72,7 +72,7 @@ function SubContractorModal({ open, setOpen }) {
 
           {/* SITE */}
           <p className="text-sm text-gray-600 mb-4">
-            Site: <span className="font-medium">Site A</span>
+            サイト: <span className="font-medium">Site A</span>
           </p>
 
           {/* COMPANIES */}
@@ -82,7 +82,7 @@ function SubContractorModal({ open, setOpen }) {
 
                 {/* COMPANY HEADER */}
                 <div className="flex justify-between items-center mb-2">
-                  <label className="text-sm text-gray-600">Company</label>
+                  <label className="text-sm text-gray-600">会社</label>
                   <button
                     onClick={() => deleteCompany(cIndex)}
                     className="text-red-500 hover:text-red-700"
@@ -101,18 +101,18 @@ function SubContractorModal({ open, setOpen }) {
                     setCompanies(updated);
                   }}
                 >
-                  <option value="">Select company</option>
-                  <option>○○ Electrical</option>
-                  <option>△△ Construction</option>
+                  <option value="">会社を選択</option>
+                  <option>○○電気</option>
+                  <option>△△建設</option>
                 </select>
 
-                <p className="text-xs text-gray-500 mt-1">Contract: {company.contract}</p>
+                <p className="text-xs text-gray-500 mt-1">契約: {company.contract}</p>
                 <div className="space-y-3">
                   {company.workers.map((worker, wIndex) => (
                     <div key={wIndex} className="flex items-center gap-2 w-full">
                     <div className="flex-1 min-w-0 space-y-2">
                         <input
-                        placeholder="Worker name"
+                        placeholder="作業者名"
                         value={worker.name}
                         onChange={(e) => {
                             const updated = [...companies];
@@ -172,14 +172,14 @@ function SubContractorModal({ open, setOpen }) {
                     onClick={() => addWorker(cIndex)}
                     className="text-green-600 text-sm flex items-center gap-1"
                   >
-                    <Plus size={16} /> Add Worker
+                    <Plus size={16} /> 作業者を追加
                   </button>
 
                   <button
                     onClick={() => bulkSet(cIndex, "09:00", "18:00")}
                     className="text-blue-600 text-sm"
                   >
-                    Bulk Set: Same time for all
+                    一括設定: 全員同じ時間
                   </button>
                 </div>
 
@@ -192,20 +192,20 @@ function SubContractorModal({ open, setOpen }) {
             onClick={addCompany}
             className="mt-4 text-green-600 flex items-center gap-1 text-sm"
           >
-            <Plus size={16} /> Add Another Company
+            <Plus size={16} /> 別の会社を追加
           </button>
 
           {/* ENTERED SUMMARY */}
           <div className="mt-6 border-t pt-4 space-y-3">
-            <p className="font-semibold text-sm">Entered</p>
+            <p className="font-semibold text-sm">入力済み</p>
             {companies.map((company, cIndex) => (
               <div key={cIndex}>
                 <p className="text-sm font-medium">
-                  ■ {company.company || "Company"} ({company.contract})
+                  ■ {company.company || "会社"} ({company.contract})
                 </p>
                 {company.workers.map((w, i) => (
                   <p key={i} className="text-xs text-gray-600 ml-2">
-                    {w.name || "Worker"} {w.start}-{w.end}
+                    {w.name || "作業者"} {w.start}-{w.end}
                   </p>
                 ))}
               </div>
@@ -216,13 +216,13 @@ function SubContractorModal({ open, setOpen }) {
         <div className="flex gap-3 mt-6">
             <Button
                 buttonStyle="active"
-                text="Next (Transportation)"
+                text="次へ（交通費）"
                 onClick={() => setOpenTransportModal(true)}
                 customButton="flex-1"
             />
             <Button
                 buttonStyle="secondary"
-                text="Skip"
+                text="スキップ"
                 onClick={() => setOpen(false)}
                 customButton="flex-1"
             />

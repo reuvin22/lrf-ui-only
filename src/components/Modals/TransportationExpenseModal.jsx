@@ -34,16 +34,16 @@ function TransportationExpenseModal({ open, setOpen, sites = [] }) {
       <div className="relative bg-white w-full max-w-md rounded-3xl shadow-xl p-6 max-h-[90vh] overflow-y-auto">
         {/* HEADER */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Transportation Expenses</h2>
-            <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-600">
-              <X size={22} />
-            </button>
+          <h2 className="text-lg font-semibold">交通費</h2>
+          <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-600">
+            <X size={22} />
+          </button>
         </div>
 
         {/* INFO */}
         <p className="text-sm text-gray-600 mb-4">
-          ※ No need to enter commuter pass expenses<br />
-          ※ Enter ad-hoc transport costs (train/bus) only
+          ※ 定期代の入力は不要です<br />
+          ※ 臨時の交通費（電車・バス）のみ入力してください
         </p>
 
         {/* EXPENSES */}
@@ -52,19 +52,19 @@ function TransportationExpenseModal({ open, setOpen, sites = [] }) {
             <div key={index} className="border rounded-xl p-4 space-y-3">
 
               <div className="flex justify-between items-center">
-                <span className="font-medium text-sm">Expense {index + 1}</span>
+                <span className="font-medium text-sm">交通費 {index + 1}</span>
                 {expenses.length > 1 && (
-                <button
+                  <button
                     onClick={() => deleteExpense(index)}
                     className="flex-shrink-0 text-red-500 hover:text-red-700 w-8 h-8 flex items-center justify-center"
-                >
+                  >
                     <X size={20} />
-                </button>
+                  </button>
                 )}
               </div>
 
               <div className="flex flex-col">
-                <label className="text-sm text-gray-600">Amount (¥)</label>
+                <label className="text-sm text-gray-600">金額 (¥)</label>
                 <input
                   type="number"
                   className="w-full border rounded-lg p-2 mt-1"
@@ -75,18 +75,18 @@ function TransportationExpenseModal({ open, setOpen, sites = [] }) {
               </div>
 
               <div className="flex flex-col">
-                <label className="text-sm text-gray-600">Route (optional)</label>
+                <label className="text-sm text-gray-600">経路 (任意)</label>
                 <input
                   type="text"
                   className="w-full border rounded-lg p-2 mt-1"
                   value={expense.route}
                   onChange={(e) => updateExpense(index, "route", e.target.value)}
-                  placeholder="Shinjuku→Site A"
+                  placeholder="新宿→Site A"
                 />
               </div>
 
               <div className="flex flex-col">
-                <label className="text-sm text-gray-600">Site</label>
+                <label className="text-sm text-gray-600">サイト</label>
                 <select
                   className="w-full border rounded-lg p-2 mt-1"
                   value={expense.site}
@@ -95,7 +95,7 @@ function TransportationExpenseModal({ open, setOpen, sites = [] }) {
                   {sites.length > 0 ? (
                     sites.map((site, i) => <option key={i} value={site}>{site}</option>)
                   ) : (
-                    <option value="">No sites</option>
+                    <option value="">サイトなし</option>
                   )}
                 </select>
               </div>
@@ -106,10 +106,10 @@ function TransportationExpenseModal({ open, setOpen, sites = [] }) {
 
         {/* ADD ANOTHER */}
         <button
-        onClick={addExpense}
-        className="mt-4 flex items-center gap-1 text-sm text-green-600 font-medium hover:text-green-800"
+          onClick={addExpense}
+          className="mt-4 flex items-center gap-1 text-sm text-green-600 font-medium hover:text-green-800"
         >
-        <Plus size={16} /> Add Another
+          <Plus size={16} /> 追加
         </button>
 
         {/* SUMMARY */}
@@ -125,12 +125,12 @@ function TransportationExpenseModal({ open, setOpen, sites = [] }) {
         <div className="flex gap-3 mt-6">
           <Button
             buttonStyle="primary"
-            text="Done"
+            text="完了"
             onClick={() => setOpen(false)}
           />
           <Button
             buttonStyle="secondary"
-            text="Skip (no transport cost)"
+            text="スキップ（交通費なし）"
             onClick={() => setOpen(false)}
           />
         </div>

@@ -97,7 +97,7 @@ function Layout() {
   };
 
   const handleEndOfDay = () => {
-    openConfirmation("Are you sure you want to end work?", () => {
+    openConfirmation("「作業を終了してもよろしいですか？」", () => {
       setConfirmLoading(true);
       const now = new Date().toISOString();
 
@@ -143,7 +143,7 @@ function Layout() {
               status === "Working" ? "text-green-600" : "text-gray-600"
             }`}
           >
-            Status: {status}
+            ステータス： {status}
           </span>
         </div>
       </div>
@@ -185,7 +185,7 @@ function Layout() {
 
                 {seg.segment_type !== "OFFICE" && (
                   <p className="text-sm text-gray-500">
-                    → {seg.site_id || "No Selected Site"}
+                    → {seg.site_id || "サイトが選択されていません"}
                   </p>
                 )}
               </div>
@@ -196,7 +196,7 @@ function Layout() {
                 onClick={(e) => {
                   e.stopPropagation();
                   openConfirmation(
-                    `End "${seg.segment_type}" segment?`,
+                    `「${seg.segment_type}」セグメントを終了しますか？`,
                     () => handleEndSegment(seg)
                   );
                 }}
@@ -208,22 +208,22 @@ function Layout() {
           </div>
         ))}
 
-        {status !== "Completed" && status !== "End Of Day" && (
+        {status !== "完了" && status !== "一日の終了" && (
           <div className="space-y-2">
             <Button
-              text={segments.length > 0 ? "+ Add Segment" : "▶ Start"}
+              text={segments.length > 0 ? "＋セグメントを追加" : "▶ 開始"}
               customButton="bg-green-500 text-white py-4 hover:bg-green-600"
               onClick={() => handleStartSegment("default")}
             />
 
             <Button
-              text="+ Add Segment (manual)"
+              text="＋セグメントを手動で追加"
               customButton="bg-lime-500 text-white py-4 hover:bg-lime-600"
               onClick={() => handleStartSegment("manual")}
             />
 
             <Button
-              text="↪ End Work Day"
+              text="↪ 仕事終了"
               customButton="border border-gray-300 py-4"
               onClick={handleEndOfDay}
               disabled={segments.length === 0}
@@ -242,9 +242,9 @@ function Layout() {
         segmentData={editingSegment}
         segments={["OFFICE", "TRAVEL", "SITE"]}
         sites={[
-          "Site A - Shinjuku Tower",
-          "Site B - Shibuya Office",
-          "Site C - Roppongi Hills",
+          "サイトA - 新宿タワー",
+          "サイトB - 渋谷オフィス",
+          "サイトC - 六本木ヒルズ",
         ]}
         onSave={handleUpdateSegment}
       />

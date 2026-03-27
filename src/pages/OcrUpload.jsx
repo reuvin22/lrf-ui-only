@@ -15,7 +15,7 @@ function OcrUpload() {
     <div className="max-w-md mx-auto min-h-screen bg-gray-100">
       {/* HEADER */}
       <div className="bg-white px-5 py-4 border-b">
-        <span className="font-semibold text-lg">Document Upload</span>
+        <span className="font-semibold text-lg">書類アップロード</span>
       </div>
 
       <div className="p-4 space-y-4">
@@ -33,7 +33,7 @@ function OcrUpload() {
 
               <Button
                 buttonStyle="secondary"
-                text="Remove"
+                text="削除"
                 onClick={() => setImagePreview(null)}
                 customButton="w-full"
               />
@@ -51,7 +51,7 @@ function OcrUpload() {
                 text={
                   <span className="flex items-center gap-2 justify-center">
                     <Image size={18} />
-                    Upload Image
+                    画像をアップロード
                   </span>
                 }
               />
@@ -71,28 +71,28 @@ function OcrUpload() {
         <div className="bg-white rounded-2xl shadow-sm p-5 space-y-4">
           <div>
             <label className="text-sm text-gray-600 font-medium">
-              Category *
+              カテゴリ *
             </label>
             <select className="w-full mt-1 border border-gray-200 rounded-xl p-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
-              <option>Ad-hoc Transport</option>
-              <option>Transportation</option>
-              <option>Meals</option>
-              <option>Supplies</option>
+              <option>臨時交通費</option>
+              <option>交通費</option>
+              <option>食事代</option>
+              <option>消耗品</option>
             </select>
           </div>
 
           <div>
-            <label className="text-sm text-gray-600 font-medium">Site *</label>
+            <label className="text-sm text-gray-600 font-medium">現場 *</label>
             <select className="w-full mt-1 border border-gray-200 rounded-xl p-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
-              <option>Site A</option>
-              <option>Site B</option>
+              <option>現場A</option>
+              <option>現場B</option>
             </select>
           </div>
 
           <div>
-            <label className="text-sm text-gray-600 font-medium">Note</label>
+            <label className="text-sm text-gray-600 font-medium">メモ</label>
             <textarea
-              placeholder="Optional"
+              placeholder="任意"
               className="w-full mt-1 border border-gray-200 rounded-xl p-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
             />
           </div>
@@ -103,7 +103,7 @@ function OcrUpload() {
             text={
               <span className="flex items-center gap-2 justify-center">
                 <Upload size={18} />
-                Upload
+                アップロード
               </span>
             }
           />
@@ -112,22 +112,22 @@ function OcrUpload() {
         {/* UPLOADED ITEMS */}
         <div className="space-y-3">
           <p className="text-xs font-semibold text-gray-500 uppercase">
-            Uploaded (Today)
+            本日アップロード済み
           </p>
 
           <div className="bg-white rounded-xl p-4 shadow-sm">
             <p className="font-medium text-gray-700">
-              Ad-hoc Transport Site A 16:20
+              臨時交通費 現場A 16:20
             </p>
-            <p className="text-sm text-orange-500">Status: Pending</p>
+            <p className="text-sm text-orange-500">ステータス: 保留中</p>
           </div>
 
           <div className="bg-white rounded-xl p-4 shadow-sm">
             <p className="font-medium text-gray-700">
-              Subcontractor Invoice Site A 14:05
+              下請け請求書 現場A 14:05
             </p>
             <p className="text-sm text-green-600">
-              Status: Completed ¥35,000
+              ステータス: 完了 ¥35,000
             </p>
           </div>
         </div>

@@ -61,7 +61,7 @@ function ManualTimeModal() {
       />
       <div className="relative bg-white w-full max-w-sm rounded-[2rem] shadow-2xl p-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold text-gray-900">Set Time</h2>
+          <h2 className="text-xl font-bold text-gray-900">時間を設定</h2>
           <button
             onClick={() => setOpenTimeModal(false)}
             className="cursor-pointer text-gray-400 hover:text-gray-600"
@@ -74,7 +74,7 @@ function ManualTimeModal() {
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm text-gray-700 mb-1">Start Time</label>
+            <label className="block text-sm text-gray-700 mb-1">開始時間</label>
             <div className="flex items-center border rounded-lg px-3 py-2">
               <Clock className="text-gray-400 mr-2" size={18} />
               <input
@@ -87,7 +87,7 @@ function ManualTimeModal() {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-700 mb-1">End Time</label>
+            <label className="block text-sm text-gray-700 mb-1">終了時間</label>
             <div className="flex items-center border rounded-lg px-3 py-2">
               <Clock className="text-gray-400 mr-2" size={18} />
               <input
@@ -108,7 +108,7 @@ function ManualTimeModal() {
                 : "bg-green-500 text-white hover:bg-green-600"
             }`}
           >
-            {isLoading ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : "Add Segment"}
+            {isLoading ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : "セグメントを追加"}
           </button>
         </div>
       </div>

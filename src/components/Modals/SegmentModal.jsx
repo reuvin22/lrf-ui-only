@@ -23,9 +23,9 @@ function SegmentModal() {
   if (!openSegmentModal) return null;
 
   const options = [
-    { name: "Travel", description: "Movement between sites", icon: Car, value: "TRAVEL" },
-    { name: "Site", description: "Construction site work", icon: MapPin, value: "SITE" },
-    { name: "Office", description: "Office work", icon: Building2, value: "OFFICE" },
+    { name: "移動", description: "サイト間の移動", icon: Car, value: "TRAVEL" },
+    { name: "現場", description: "建設現場での作業", icon: MapPin, value: "SITE" },
+    { name: "オフィス", description: "オフィスでの作業", icon: Building2, value: "OFFICE" },
   ];
 
   const handleSelect = (segment) => {
@@ -48,7 +48,7 @@ function SegmentModal() {
 
     if (segment.value === "OFFICE") {
       if (recordType === "manual") {
-        setOpenTimeModal(true); // manual time modal handles saving
+        setOpenTimeModal(true);
       } else {
         setSegments(prev => [...prev, segmentObj]);
       }
@@ -65,7 +65,7 @@ function SegmentModal() {
       />
       <div className="relative bg-white w-full max-w-sm rounded-[2rem] shadow-2xl p-6 pointer-events-auto">
         <div className="flex justify-between items-center mb-6 px-1">
-          <h2 className="text-xl font-bold text-gray-900">Select Segment Type</h2>
+          <h2 className="text-xl font-bold text-gray-900">セグメントタイプを選択</h2>
           <button
             onClick={() => setOpenSegmentModal(false)}
             className="cursor-pointer text-gray-400 hover:text-gray-600"

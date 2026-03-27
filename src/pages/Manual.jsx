@@ -5,50 +5,50 @@ function Manual() {
   const sections = [
     {
       icon: Clock,
-      title: "How to Enter",
-      description: `Use the "Today" screen to start/end segments in real-time, or add segments manually with specific start and end times.`
+      title: "入力方法",
+      description: `「今日」画面でリアルタイムにセグメントを開始/終了するか、手動で開始時刻と終了時刻を指定してセグメントを追加できます。`
     },
     {
       icon: MapPin,
-      title: "Segment Types",
-      description: `Travel: Moving between locations. Site: On-site work (select assigned site). Office Work: Administrative tasks at the office.`
+      title: "セグメント種類",
+      description: `移動: 場所間の移動。現場: 担当現場での作業（割り当てられた現場を選択）。オフィス作業: 事務作業。`
     },
     {
       icon: Calculator,
-      title: "Overtime Calculation",
-      description: `Hours exceeding 8h are calculated at 1.25× multiplier. Break time is automatically deducted based on total hours worked.`
+      title: "残業計算",
+      description: `8時間を超える場合は1.25倍の計算。休憩時間は総勤務時間に応じて自動で差し引かれます。`
     },
     {
       icon: Users,
-      title: "Man-day Accounting",
-      description: `If a Site segment is present for the day, it counts as 1 man-day for that site.`
+      title: "人日計算",
+      description: `その日に現場セグメントがある場合、その現場に対して1人日としてカウントされます。`
     },
     {
       icon: Car,
-      title: "Transportation Expenses",
-      description: `Commuter pass expenses do NOT need to be entered. Only enter ad-hoc train/bus transportation costs incurred that day.`
+      title: "交通費",
+      description: `通勤定期代は入力不要です。その日の臨時の電車・バス等の交通費のみ入力してください。`
     },
     {
       icon: FileText,
-      title: "Subcontractor Reporting",
-      description: `Only for site leaders. Report individually for both quasi-consignment and contract work. Same time can be set using "Bulk Setting".`
+      title: "下請け報告",
+      description: `現場責任者のみ。準委任および請負作業について個別に報告します。「一括設定」を使用して同じ時間を設定可能です。`
     },
     {
       icon: Upload,
-      title: "OCR Upload",
-      description: `Capture receipts and invoices. Select the correct category and site. Amounts are read automatically using OCR.`
+      title: "OCRアップロード",
+      description: `領収書や請求書を撮影します。カテゴリと現場を選択してください。金額はOCRで自動読み取りされます。`
     },
     {
       icon: Lock,
-      title: "Closing Date",
-      description: `Data for the current month can be edited until the 10th of the following month. Afterwards it is locked and view-only.`
+      title: "締め日",
+      description: `当月のデータは翌月10日まで編集可能です。それ以降はロックされ、閲覧のみ可能です。`
     },
   ];
 
   return (
     <div className="max-w-md mx-auto min-h-screen bg-gray-100">
       <div className="bg-white px-5 py-4 border-b">
-        <span className="font-semibold text-lg">Manual</span>
+        <span className="font-semibold text-lg">マニュアル</span>
       </div>
       <div className="p-4 space-y-4">
         {sections.map((section, index) => (
@@ -70,7 +70,6 @@ function Manual() {
           </div>
         ))}
       </div>
-
     </div>
   );
 }

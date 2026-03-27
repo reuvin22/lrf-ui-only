@@ -17,10 +17,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/manual" element={<Manual />} />
           <Route path="/calendar" element={<Calendar />} />
-          
-          {/* ✅ Fix: add dynamic parameters */}
           <Route path="/calendar/detail/:year/:month/:day" element={<CalendarDetail />} />
-
           <Route path="/ocr" element={<OcrUpload />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route

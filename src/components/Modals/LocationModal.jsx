@@ -23,9 +23,9 @@ function LocationModal() {
   if (!openLocationModal) return null;
 
   const sites = [
-    { id: "1", name: "Site A - Shinjuku Tower", icon: MapPin },
-    { id: "2", name: "Site B - Shibuya Office", icon: MapPin },
-    { id: "3", name: "Site C - Roppongi Hills", icon: MapPin },
+    { id: "1", name: "サイトA - 新宿タワー", icon: MapPin },
+    { id: "2", name: "サイトB - 渋谷オフィス", icon: MapPin },
+    { id: "3", name: "サイトC - 六本木ヒルズ", icon: MapPin },
   ];
 
   const handleClose = () => {
@@ -83,7 +83,7 @@ function LocationModal() {
       />
       <div className="relative bg-white w-full max-w-sm rounded-[2rem] shadow-2xl p-6">
         <div className="flex justify-between items-center mb-6 px-1">
-          <h2 className="text-xl font-bold text-gray-900">Select Location</h2>
+          <h2 className="text-xl font-bold text-gray-900">場所を選択</h2>
           <button onClick={handleClose} className="cursor-pointer text-gray-400 hover:text-gray-600">
             <X size={24} />
           </button>
@@ -93,8 +93,8 @@ function LocationModal() {
           {sites.map((site, index) => (
             <ActionCard
               key={index}
-              name={site.name}
-              description=""
+              name={site.name} // 動的なのでそのまま
+              description="" // 空の説明はそのまま
               icon={site.icon}
               onClick={() => handleSelectSite(site)}
             />
@@ -104,7 +104,7 @@ function LocationModal() {
             onClick={handleSkip}
             className="w-full py-2 mt-2 text-sm font-medium rounded-lg border border-gray-300"
           >
-            Skip
+            スキップ
           </button>
         </div>
       </div>

@@ -87,7 +87,7 @@ function Calendar() {
     <div className="max-w-md mx-auto min-h-screen bg-gray-100">
       <div className="bg-white px-5 py-4 border-b">
         <div className="flex items-center gap-2 mt-1">
-          <span className="font-semibold text-lg">Input / Edit</span>
+          <span className="font-semibold text-lg">入力 / 編集</span>
         </div>
       </div>
 
@@ -96,7 +96,7 @@ function Calendar() {
         <div className="flex items-center justify-between mb-4">
           <button onClick={prevMonth} className="text-3xl cursor-pointer">‹</button>
           <h2 className="font-semibold text-gray-800">
-            {date.toLocaleString("en-US", { month: "long" })} {year}
+            {date.toLocaleString("ja-JP", { month: "long" })} {year}
           </h2>
           <button onClick={nextMonth} className="text-3xl cursor-pointer">›</button>
         </div>
@@ -129,9 +129,9 @@ function Calendar() {
 
         {/* Legend */}
         <div className="flex gap-6 text-xs mt-4 text-gray-600">
-          <div className="flex items-center gap-1"><span className="w-2 h-2 bg-green-500 rounded-full"></span> Entered</div>
-          <div className="flex items-center gap-1"><span className="w-2 h-2 bg-orange-400 rounded-full"></span> Missing</div>
-          <div className="flex items-center gap-1">🔒 Locked</div>
+          <div className="flex items-center gap-1"><span className="w-2 h-2 bg-green-500 rounded-full"></span> 入力済み</div>
+          <div className="flex items-center gap-1"><span className="w-2 h-2 bg-orange-400 rounded-full"></span> 未入力</div>
+          <div className="flex items-center gap-1">🔒 ロック済み</div>
         </div>
       </div>
     </div>

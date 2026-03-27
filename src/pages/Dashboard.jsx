@@ -11,20 +11,20 @@ function Dashboard() {
   const sites = [
     {
       id: "A",
-      name: "Site A",
-      status: "In Progress",
+      name: "サイト A",
+      status: "進行中",
       statusStyle: "bg-green-600 text-white",
     },
     {
       id: "B",
-      name: "Site B",
-      status: "Completed",
+      name: "サイト B",
+      status: "完了",
       statusStyle: "bg-blue-500 text-white",
     },
     {
       id: "C",
-      name: "Site C",
-      status: "Not Started",
+      name: "サイト C",
+      status: "未開始",
       statusStyle: "bg-gray-200 text-gray-600",
     },
   ];
@@ -33,13 +33,13 @@ function Dashboard() {
     <div className="max-w-md mx-auto min-h-screen bg-gray-100">
 
       <div className="bg-white px-5 py-4 border-b">
-        <span className="font-semibold text-lg">Dashboard</span>
+        <span className="font-semibold text-lg">ダッシュボード</span>
       </div>
 
       <div className="p-4 space-y-4">
 
         <div className="text-sm text-gray-500 flex items-center gap-2">
-          ⏱ Last updated: 15:25
+          ⏱ 最終更新: 15:25
         </div>
 
         {sites.map((site) => (
@@ -73,41 +73,41 @@ function Dashboard() {
               <div className="border-t px-4 py-4 space-y-4">
 
                 <div>
-                  <p className="text-xs text-gray-500 mb-2">EMPLOYEES</p>
+                  <p className="text-xs text-gray-500 mb-2">従業員</p>
 
                   <div className="flex justify-between text-sm">
-                    <span>Yamada</span>
-                    <span className="text-gray-500">On-site</span>
+                    <span>山田</span>
+                    <span className="text-gray-500">現場</span>
                   </div>
 
                   <div className="flex justify-between text-sm">
-                    <span>Sato</span>
-                    <span className="text-gray-500">Traveling</span>
+                    <span>佐藤</span>
+                    <span className="text-gray-500">移動中</span>
                   </div>
                 </div>
 
                 <div>
-                  <p className="text-xs text-gray-500 mb-2">QUASI-DELEGATION</p>
+                  <p className="text-xs text-gray-500 mb-2">準委任</p>
 
                   <div className="flex justify-between items-center text-sm">
-                    <span>○○ Electrical</span>
+                    <span>○○電気</span>
 
                     <div className="flex items-center gap-1 text-gray-500">
                       <Users size={14} />
-                      <span>3 ppl</span>
+                      <span>3 名</span>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <p className="text-xs text-gray-500 mb-2">FIXED-PRICE</p>
+                  <p className="text-xs text-gray-500 mb-2">請負</p>
 
                   <div className="flex justify-between items-center text-sm">
-                    <span>△△ Construction</span>
+                    <span>△△建設</span>
 
                     <div className="flex items-center gap-1 text-gray-500">
                       <Users size={14} />
-                      <span>2 ppl</span>
+                      <span>2 名</span>
                     </div>
                   </div>
                 </div>
