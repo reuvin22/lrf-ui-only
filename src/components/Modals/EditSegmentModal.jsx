@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Button from "../Button";
+import { useSegmentContext } from "../../context/SegmentContext";
 
 function EditSegmentModal({
   open,
@@ -7,8 +8,9 @@ function EditSegmentModal({
   segmentData,
   segments,
   sites,
-  onSave
 }) {
+  const { setSegments } = useSegmentContext();
+
   const [segment, setSegment] = useState("");
   const [site, setSite] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -16,6 +18,7 @@ function EditSegmentModal({
   const [type, setType] = useState("");
   const [site_name, setSiteName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   const formatTime = (datetime) => {
     if (!datetime) return "";
     const d = new Date(datetime);
@@ -35,7 +38,7 @@ function EditSegmentModal({
       setType(segmentData.type || "");
       setSiteName(segmentData.site_name || "");
     }
-  }, [segmentData?.segment_id]);
+  }, [segmentData?.id]); // ✅ use id (not segment_id)
 
   if (!open) return null;
 
@@ -57,12 +60,12 @@ function EditSegmentModal({
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
     setIsLoading(true);
 
     const today = new Date().toISOString().split("T")[0];
 
-    const payload = {
+    const updatedSegment = {
       ...segmentData,
       type: type,
       segment_type: segment,
@@ -71,18 +74,19 @@ function EditSegmentModal({
     };
 
     if (isManual) {
-      payload.start_time = `${today} ${startTime}:00`;
-      payload.end_time = `${today} ${endTime}:00`;
+      updatedSegment.start_time = `${today}T${startTime}:00`;
+      updatedSegment.end_time = `${today}T${endTime}:00`;
     }
 
-    try {
-      await onSave(payload);
-      onClose();
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
+    // ✅ UPDATE STATE (NO BACKEND)
+    setSegments((prev) =>
+      prev.map((seg) =>
+        seg.id === updatedSegment.id ? updatedSegment : seg
+      )
+    );
+
+    setIsLoading(false);
+    onClose();
   };
 
   return (

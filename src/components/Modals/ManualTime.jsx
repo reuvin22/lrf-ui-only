@@ -2,22 +2,21 @@ import React, { useState, useEffect } from "react";
 import { X, Clock } from "lucide-react";
 import { useManualTimeContext } from "../../context/ManualTimeContext";
 import { useSegmentContext } from "../../context/SegmentContext";
-import { segmentApi } from "../../api/Api";
 
 function ManualTimeModal() {
   const {
     openTimeModal,
     setOpenTimeModal,
-    setStartTime,
-    setEndTime
   } = useManualTimeContext();
 
   const { tempSegment, setSegments } = useSegmentContext();
+
   const [tempStartTime, setTempStartTime] = useState("");
   const [tempEndTime, setTempEndTime] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  // ✅ Validate time
   useEffect(() => {
     if (tempStartTime && tempEndTime && tempEndTime < tempStartTime) {
       setErrorMessage("End time cannot be before start time.");
@@ -26,7 +25,7 @@ function ManualTimeModal() {
     }
   }, [tempStartTime, tempEndTime]);
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (tempEndTime && tempEndTime < tempStartTime) {
       alert("End time cannot be before start time.");
       return;
@@ -34,6 +33,7 @@ function ManualTimeModal() {
 
     setIsLoading(true);
 
+    // ✅ Convert "HH:mm" to ISO string
     const buildDateTime = (time) => {
       if (!time) return null;
 
@@ -54,17 +54,19 @@ function ManualTimeModal() {
       end_time: tempEndTime ? buildDateTime(tempEndTime) : null,
     };
 
-    try {
-      await segmentApi.create(segmentToSave);
-    } catch (err) {
-      console.error("Create segment failed:", err);
-    } finally {
-      setIsLoading(false);
-      setOpenTimeModal(false);
-    }
+    // ✅ Save to state (NO BACKEND)
+    setSegments((prev) => [...prev, segmentToSave]);
+
+    // ✅ Close modal
+    setIsLoading(false);
+    setOpenTimeModal(false);
+
+    // Optional: reset inputs
+    setTempStartTime("");
+    setTempEndTime("");
   };
-  
-  // **Render nothing if modal is closed**
+
+  // ✅ Render nothing if closed
   if (!openTimeModal) return null;
 
   return (
@@ -77,6 +79,7 @@ function ManualTimeModal() {
       <div className="relative bg-white w-full max-w-sm rounded-[2rem] shadow-2xl p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-gray-900">時間を設定</h2>
+
           <button
             onClick={() => setOpenTimeModal(false)}
             className="cursor-pointer text-gray-400 hover:text-gray-600"

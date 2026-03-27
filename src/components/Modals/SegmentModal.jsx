@@ -6,15 +6,10 @@ import { useManualTimeContext } from '../../context/ManualTimeContext';
 import { useLocationContext } from '../../context/LocationContext';
 import { getCurrentTime } from '../../utils/getCurrentTime';
 import { generateSegmentId } from '../../utils/idGenerator';
-import { formattedLaravelDate } from '../../utils/formattedLaravelDate';
-import { attendanceApi, segmentApi } from '../../api/Api';
-import { attendanceChecker } from '../../utils/attendanceChecker';
-import { useAttendanceContext } from '../../context/AttendanceContext';
 
 function SegmentModal() {
   const {
     setSelectedSegment,
-    setStartSegment,
     openSegmentModal,
     setOpenSegmentModal,
     setOpenLocationModal,
@@ -24,61 +19,41 @@ function SegmentModal() {
     tempSegment
   } = useSegmentContext();
 
-  const {
-    setSelectedSite
-  } = useLocationContext()
-  const {
-    setOpenTimeModal
-  } = useManualTimeContext()
+  const { setOpenTimeModal } = useManualTimeContext();
 
-  const { attendance } = useAttendanceContext()
   if (!openSegmentModal) return null;
 
   const options = [
-    { name: "Travel", description: "Movement between sites", icon: Car, value: "TRAVEL"},
+    { name: "Travel", description: "Movement between sites", icon: Car, value: "TRAVEL" },
     { name: "Site", description: "Construction site work", icon: MapPin, value: "SITE" },
     { name: "Office", description: "Office work", icon: Building2, value: "OFFICE" },
   ];
 
-  const handleSelect = async (segment) => {
+  const handleSelect = (segment) => {
     const rawStartTime = tempSegment?.start_time || getCurrentTime();
 
-    try {
-      const attendance = await attendanceChecker();
+    // Create segment object
+    const segmentObj = {
+      id: generateSegmentId(),
+      segment_type: segment.value,
+      type: recordType,
+      start_time: new Date(rawStartTime).toISOString(),
+      site_id: null,
+      site_name: null,
+      end_time: null
+    };
 
-      if (segment.value === "OFFICE") {
-        await attendanceApi.update(attendance.attendance_id, {
-          employee_id: 1,
-          work_date: attendance.work_date,
-          status: "WORKING",
-        });
-      }
+    setSelectedSegment(segment.value);
+    setTempSegment(segmentObj); // store in tempSegment
+    setOpenSegmentModal(false);
 
-      const segmentObj = {
-        attendance_id: attendance.attendance_id,
-        segment_type: segment.value,
-        type: recordType,
-        start_time: new Date(rawStartTime).toISOString(),
-        site_id: null,
-        end_time: null
-      };
-
-      setSelectedSegment(segment.value);
-      setTempSegment(segmentObj);
-      setOpenSegmentModal(false);
-
-      if (segment.value === "OFFICE") {
-        if (recordType === "manual") {
-          setOpenTimeModal(true);
-        } else {
-          await segmentApi.create(segmentObj);
-        }
-      } else {
-        setOpenLocationModal(true);
-      }
-
-    } catch (err) {
-      console.error("Failed to create attendance/segment:", err);
+    if (segment.value === "OFFICE") {
+      // OFFICE: no location required, save immediately
+      setSegments(prev => [...prev, segmentObj]); // ✅ Add to main state
+      if (recordType === "manual") setOpenTimeModal(true);
+    } else {
+      // TRAVEL / SITE: require location first
+      setOpenLocationModal(true);
     }
   };
 
@@ -88,9 +63,11 @@ function SegmentModal() {
         className="absolute inset-0 bg-black/40 pointer-events-auto"
         onClick={() => setOpenSegmentModal(false)}
       />
+
       <div className="relative bg-white w-full max-w-sm rounded-[2rem] shadow-2xl p-6 pointer-events-auto">
         <div className="flex justify-between items-center mb-6 px-1">
           <h2 className="text-xl font-bold text-gray-900">Select Segment Type</h2>
+
           <button
             onClick={() => setOpenSegmentModal(false)}
             className="cursor-pointer text-gray-400 hover:text-gray-600"

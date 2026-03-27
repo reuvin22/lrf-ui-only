@@ -4,14 +4,11 @@ import ActionCard from '../ActionCard';
 import { useSegmentContext } from '../../context/SegmentContext';
 import { useLocationContext } from '../../context/LocationContext';
 import { useManualTimeContext } from '../../context/ManualTimeContext';
-import { attendanceApi, segmentApi } from '../../api/Api';
-import { useAttendanceContext } from '../../context/AttendanceContext';
 
 function LocationModal() {
   const {
     openLocationModal,
     setOpenLocationModal,
-    setStartSegment,
     recordType,
     selectedSegment,
     setTempSegment,
@@ -20,8 +17,8 @@ function LocationModal() {
   } = useSegmentContext();
 
   const { setOpenTimeModal } = useManualTimeContext();
-  const { setSelectedSite, selectedSite } = useLocationContext();
-  const {attendance} = useAttendanceContext()
+  const { setSelectedSite } = useLocationContext();
+
   const [step, setStep] = useState('TYPE');
 
   if (!openLocationModal) return null;
@@ -36,9 +33,15 @@ function LocationModal() {
     setStep('TYPE');
     setOpenLocationModal(false);
   };
-  
-  const handleSelectSite = async (site) => {
-    const payload = {
+
+  // ✅ SELECT SITE (STATE ONLY)
+  const handleSelectSite = (site) => {
+    if (!tempSegment) {
+      console.error("tempSegment is null. Cannot proceed.");
+      return;
+    }
+
+    const updatedSegment = {
       ...tempSegment,
       site_id: site.name,
       site_name: site.name,
@@ -47,37 +50,37 @@ function LocationModal() {
         : new Date().toISOString(),
     };
 
+    setSelectedSite(site.name);
+
     if (recordType === "manual") {
-      setTempSegment(payload);
+      setTempSegment(updatedSegment);
       setOpenLocationModal(false);
       setOpenTimeModal(true);
       return;
     }
-    await attendanceApi.update(attendance.attendance_id, {
-          employee_id: 1,
-          status: "WORKING",
-          work_date: attendance.work_date
-        })
-    try {
-      await segmentApi.create(payload);
-    } catch (err) {
-      console.error("Create failed:", err);
-    }
 
+    setSegments((prev) => [...prev, updatedSegment]);
     setOpenLocationModal(false);
   };
 
+  // ✅ SKIP SITE (STATE ONLY)
   const handleSkip = () => {
+    if (!tempSegment) {
+      console.error("tempSegment is null. Cannot skip.");
+      return;
+    }
+
     const updatedSegment = {
       ...tempSegment,
       site_id: null,
+      site_name: null,
     };
-
-    console.log("📍 Location Payload (Skip):", updatedSegment);
 
     if (recordType === "manual") {
       setTempSegment(updatedSegment);
       setOpenTimeModal(true);
+    } else {
+      setSegments((prev) => [...prev, updatedSegment]);
     }
 
     setOpenLocationModal(false);
@@ -89,9 +92,11 @@ function LocationModal() {
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
         onClick={handleClose}
       />
+
       <div className="relative bg-white w-full max-w-sm rounded-[2.5rem] shadow-2xl p-7">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-gray-900">Select Site</h2>
+
           <button
             onClick={handleClose}
             className="text-gray-400 hover:text-gray-600 cursor-pointer"
@@ -109,6 +114,7 @@ function LocationModal() {
               onClick={() => handleSelectSite(site)}
             />
           ))}
+
           {selectedSegment === 'Travel' && (
             <button
               onClick={handleSkip}
