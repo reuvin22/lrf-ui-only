@@ -22,7 +22,6 @@ function Layout() {
   const [status, setStatus] = useState("Not Started");
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  // ✅ STATIC attendance
   const [attendance, setAttendance] = useState({
     data: {
       work_date: new Date().toISOString(),
@@ -36,14 +35,15 @@ function Layout() {
     setRecordType,
     segments,
     setSegments,
+    tempSegment,
+    setTempSegment,
   } = useSegmentContext();
 
   const navigate = useNavigate();
-  const { setStartTime, setEndTime } = useManualTimeContext();
-
+  const { setStartTime, setEndTime, setOpenTimeModal } = useManualTimeContext();
   const today = new Date().toDateString();
 
-  // ✅ STATUS LOGIC (same as before, no backend)
+  // ✅ STATUS LOGIC BASED ON end_time
   useEffect(() => {
     const attendanceStatus = attendance?.data?.status;
 
@@ -57,11 +57,9 @@ function Layout() {
       return;
     }
 
-    const anyActive = segments.some(
-      (seg) => seg.start_time && !seg.end_time
-    );
-
-    setStatus(anyActive ? "Working" : "Completed");
+    // Any segment without end_time is active
+    const anyWorking = segments.some((seg) => !seg.end_time);
+    setStatus(anyWorking ? "Working" : "Completed");
   }, [segments, attendance]);
 
   const openConfirmation = (message, action) => {
@@ -74,7 +72,6 @@ function Layout() {
     setRecordType(type);
     setSelectedSegment("");
     setOpenSegmentModal(true);
-
     setStartTime(getCurrentTime());
     setEndTime("");
   };
@@ -87,39 +84,27 @@ function Layout() {
       startTime: segment.start_time,
       endTime: segment.end_time,
     };
-
     setEditingSegment(normalized);
     setOpenEditModal(true);
   };
 
-  // ✅ END SEGMENT (STATE ONLY)
   const handleEndSegment = (seg) => {
     const now = new Date().toISOString();
-
     setSegments((prev) =>
-      prev.map((s) =>
-        s.id === seg.id ? { ...s, end_time: now } : s
-      )
+      prev.map((s) => (s.id === seg.id ? { ...s, end_time: now } : s))
     );
-
     setOpenConfirm(false);
   };
 
-  // ✅ END OF DAY (STATE ONLY)
   const handleEndOfDay = () => {
     openConfirmation("Are you sure you want to end work?", () => {
       setConfirmLoading(true);
-
       const now = new Date().toISOString();
 
-      // end all active segments
       setSegments((prev) =>
-        prev.map((seg) =>
-          seg.end_time ? seg : { ...seg, end_time: now }
-        )
+        prev.map((seg) => (!seg.end_time ? { ...seg, end_time: now } : seg))
       );
 
-      // update attendance
       setAttendance((prev) => ({
         ...prev,
         data: {
@@ -131,17 +116,13 @@ function Layout() {
 
       setConfirmLoading(false);
       setOpenConfirm(false);
-
       navigate("/transportation-expenses");
     });
   };
 
-  // ✅ UPDATE SEGMENT (STATE ONLY)
   const handleUpdateSegment = (updatedSegment) => {
     setSegments((prev) =>
-      prev.map((seg) =>
-        seg.id === updatedSegment.id ? updatedSegment : seg
-      )
+      prev.map((seg) => (seg.id === updatedSegment.id ? updatedSegment : seg))
     );
   };
 
@@ -198,8 +179,8 @@ function Layout() {
 
               <div>
                 <p className="font-semibold text-gray-800">
-                  {formattedTime(seg.start_time)} –{" "}
-                  {formattedTime(seg.end_time)} {seg.segment_type}
+                  {formattedTime(seg.start_time)} – {formattedTime(seg.end_time)}{" "}
+                  {seg.segment_type}
                 </p>
 
                 {seg.segment_type !== "OFFICE" && (

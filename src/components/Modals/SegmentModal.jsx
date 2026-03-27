@@ -3,7 +3,6 @@ import { X, Car, MapPin, Building2 } from 'lucide-react';
 import ActionCard from '../ActionCard';
 import { useSegmentContext } from '../../context/SegmentContext';
 import { useManualTimeContext } from '../../context/ManualTimeContext';
-import { useLocationContext } from '../../context/LocationContext';
 import { getCurrentTime } from '../../utils/getCurrentTime';
 import { generateSegmentId } from '../../utils/idGenerator';
 
@@ -32,7 +31,6 @@ function SegmentModal() {
   const handleSelect = (segment) => {
     const rawStartTime = tempSegment?.start_time || getCurrentTime();
 
-    // Create segment object
     const segmentObj = {
       id: generateSegmentId(),
       segment_type: segment.value,
@@ -44,30 +42,30 @@ function SegmentModal() {
     };
 
     setSelectedSegment(segment.value);
-    setTempSegment(segmentObj); // store in tempSegment
+    setTempSegment(segmentObj); // store temp
+
     setOpenSegmentModal(false);
 
     if (segment.value === "OFFICE") {
-      // OFFICE: no location required, save immediately
-      setSegments(prev => [...prev, segmentObj]); // ✅ Add to main state
-      if (recordType === "manual") setOpenTimeModal(true);
+      if (recordType === "manual") {
+        setOpenTimeModal(true); // manual time modal handles saving
+      } else {
+        setSegments(prev => [...prev, segmentObj]);
+      }
     } else {
-      // TRAVEL / SITE: require location first
       setOpenLocationModal(true);
     }
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-[9999] p-6 pointer-events-none">
+    <div className="fixed inset-0 flex items-center justify-center z-[9999] p-6">
       <div
         className="absolute inset-0 bg-black/40 pointer-events-auto"
         onClick={() => setOpenSegmentModal(false)}
       />
-
       <div className="relative bg-white w-full max-w-sm rounded-[2rem] shadow-2xl p-6 pointer-events-auto">
         <div className="flex justify-between items-center mb-6 px-1">
           <h2 className="text-xl font-bold text-gray-900">Select Segment Type</h2>
-
           <button
             onClick={() => setOpenSegmentModal(false)}
             className="cursor-pointer text-gray-400 hover:text-gray-600"
@@ -75,7 +73,6 @@ function SegmentModal() {
             <X size={24} />
           </button>
         </div>
-
         <div className="space-y-1">
           {options.map((opt, index) => (
             <ActionCard

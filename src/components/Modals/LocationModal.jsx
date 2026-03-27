@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { X, MapPin } from 'lucide-react';
 import ActionCard from '../ActionCard';
 import { useSegmentContext } from '../../context/SegmentContext';
-import { useLocationContext } from '../../context/LocationContext';
 import { useManualTimeContext } from '../../context/ManualTimeContext';
+import { useLocationContext } from '../../context/LocationContext';
 
 function LocationModal() {
   const {
@@ -18,7 +18,6 @@ function LocationModal() {
 
   const { setOpenTimeModal } = useManualTimeContext();
   const { setSelectedSite } = useLocationContext();
-
   const [step, setStep] = useState('TYPE');
 
   if (!openLocationModal) return null;
@@ -34,20 +33,14 @@ function LocationModal() {
     setOpenLocationModal(false);
   };
 
-  // ✅ SELECT SITE (STATE ONLY)
   const handleSelectSite = (site) => {
-    if (!tempSegment) {
-      console.error("tempSegment is null. Cannot proceed.");
-      return;
-    }
+    if (!tempSegment) return;
 
     const updatedSegment = {
       ...tempSegment,
       site_id: site.name,
       site_name: site.name,
-      start_time: tempSegment?.start_time
-        ? new Date(tempSegment.start_time).toISOString()
-        : new Date().toISOString(),
+      start_time: tempSegment?.start_time ? new Date(tempSegment.start_time).toISOString() : new Date().toISOString(),
     };
 
     setSelectedSite(site.name);
@@ -63,66 +56,56 @@ function LocationModal() {
     setOpenLocationModal(false);
   };
 
-  // ✅ SKIP SITE (STATE ONLY)
   const handleSkip = () => {
-    if (!tempSegment) {
-      console.error("tempSegment is null. Cannot skip.");
-      return;
-    }
+    if (!tempSegment) return;
 
     const updatedSegment = {
       ...tempSegment,
-      site_id: null,
-      site_name: null,
+      start_time: tempSegment?.start_time ? new Date(tempSegment.start_time).toISOString() : new Date().toISOString(),
     };
 
     if (recordType === "manual") {
       setTempSegment(updatedSegment);
+      setOpenLocationModal(false);
       setOpenTimeModal(true);
-    } else {
-      setSegments((prev) => [...prev, updatedSegment]);
+      return;
     }
 
+    setSegments((prev) => [...prev, updatedSegment]);
     setOpenLocationModal(false);
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 p-6">
       <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
         onClick={handleClose}
       />
-
-      <div className="relative bg-white w-full max-w-sm rounded-[2.5rem] shadow-2xl p-7">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold text-gray-900">Select Site</h2>
-
-          <button
-            onClick={handleClose}
-            className="text-gray-400 hover:text-gray-600 cursor-pointer"
-          >
+      <div className="relative bg-white w-full max-w-sm rounded-[2rem] shadow-2xl p-6">
+        <div className="flex justify-between items-center mb-6 px-1">
+          <h2 className="text-xl font-bold text-gray-900">Select Location</h2>
+          <button onClick={handleClose} className="cursor-pointer text-gray-400 hover:text-gray-600">
             <X size={24} />
           </button>
         </div>
 
-        <div className="min-h-75">
+        <div className="space-y-1">
           {sites.map((site, index) => (
             <ActionCard
               key={index}
-              icon={site.icon}
               name={site.name}
+              description=""
+              icon={site.icon}
               onClick={() => handleSelectSite(site)}
             />
           ))}
 
-          {selectedSegment === 'Travel' && (
-            <button
-              onClick={handleSkip}
-              className="w-full py-3 mt-3 text-green-500 rounded-lg font-medium hover:text-green-800 cursor-pointer"
-            >
-              Skip (No Site)
-            </button>
-          )}
+          <button
+            onClick={handleSkip}
+            className="w-full py-2 mt-2 text-sm font-medium rounded-lg border border-gray-300"
+          >
+            Skip
+          </button>
         </div>
       </div>
     </div>
