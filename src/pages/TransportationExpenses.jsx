@@ -40,28 +40,33 @@ function TransportationExpenseScreen({ sites = [], attendanceId, onDone }) {
     };
 
   const handleDone = async () => {
-    if (expenses.length === 0) {
-        onDone && onDone([]);
-        navigate("/");
-        return;
-    }
+  if (expenses.length === 0) {
+    // No expenses entered, call onDone with empty array and navigate home
+    onDone && onDone([]);
+    navigate("/");
+    return;
+  }
 
-    setIsLoading(true);
+  setIsLoading(true);
 
-    try {
-        const payload = expenses.map(({ site_name, ...rest }) => rest);
-        console.log(payload)
-        await transportationExpensesApi.create(payload);
+  try {
+    // Remove site_name before sending to API if needed
+    const payload = expenses.map(({ site_name, ...rest }) => rest);
 
-        onDone && onDone(expenses);
+    await transportationExpensesApi.create(payload);
 
-        navigate("/");
-    } catch (err) {
-        console.error("Failed to save expenses:", err);
-    } finally {
-        setIsLoading(false);
-    }
-    };
+    // Call callback with full expense objects including site_name
+    onDone && onDone(expenses);
+
+    // Navigate back to home
+    navigate("/");
+  } catch (err) {
+    console.error("Failed to save expenses:", err);
+    alert("Failed to save transportation expenses. Please try again.");
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div className="max-w-md mx-auto bg-white min-h-screen p-6 flex flex-col gap-4">
